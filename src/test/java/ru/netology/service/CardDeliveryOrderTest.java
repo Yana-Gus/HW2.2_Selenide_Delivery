@@ -24,8 +24,8 @@ public class CardDeliveryOrderTest {
         $("[data-test-id=name] input").setValue("Сидорова Мария");
         $("[data-test-id=phone] input").setValue("+71234567890");
         $("[data-test-id=agreement]").click();
-        $("button").click();
-        $(withText("Успешно!")).shouldBe(exist, Duration.ofSeconds(15));
+        $("button.button").click();
+        $(withText("Успешно!")).shouldBe(visible, Duration.ofSeconds(15));
 
     }
 }
