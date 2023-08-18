@@ -35,5 +35,6 @@ public class CardDeliveryOrderTest {
         $(".notification__content").shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(Condition.exactText("Встреча успешно забронирована на " + bookedDate));
 
+
     }
 }
