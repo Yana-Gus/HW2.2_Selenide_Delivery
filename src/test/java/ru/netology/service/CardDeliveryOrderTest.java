@@ -81,7 +81,7 @@ public class CardDeliveryOrderTest {
     }
 
     @Test
-    void shouldBeNameFieldEnteredIncorrectly() {
+    void shouldBePhoneFieldEnteredIncorrectly() {
         open("http://localhost:9999");
         $("[data-test-id=city] input").setValue("Казань");
         String bookedDate = generateDate(5, "dd.MM.yyyy");
