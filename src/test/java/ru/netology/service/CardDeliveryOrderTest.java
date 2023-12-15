@@ -77,7 +77,7 @@ public class CardDeliveryOrderTest {
         $("[data-test-id=agreement]").click();
         $("button.button").click();
         $(byText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы")
-                .shouldBe(visible);
+                .shouldBe(visible));
     }
 
     @Test
@@ -92,6 +92,6 @@ public class CardDeliveryOrderTest {
         $("[data-test-id=agreement]").click();
         $("button.button").click();
         $(byText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.")
-                .shouldBe(visible);
+                .shouldBe(visible));
     }
 }
