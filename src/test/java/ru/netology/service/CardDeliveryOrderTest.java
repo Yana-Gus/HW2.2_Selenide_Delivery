@@ -24,6 +24,7 @@ public class CardDeliveryOrderTest {
     @Test
     public void shouldAllFieldsFilledInCorrectly() {
         open("http://localhost:9999");
+
         $("[data-test-id=city] input").setValue("Казань");
         String bookedDate = generateDate(5, "dd.MM.yyyy");
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME));
@@ -37,35 +38,60 @@ public class CardDeliveryOrderTest {
     }
 
     @Test
-    public void shouldEnteredTwoCharactersInTheCityField() {
+    void shouldBeNotCityOnTheList() {
         open("http://localhost:9999");
-        $("[data-test-id=city] input").setValue("Ка");
-        $$(".menu-item__control").find(exactText("Казань")).click();
+        $("[data-test-id=city] input").setValue("Троицк");
         String bookedDate = generateDate(5, "dd.MM.yyyy");
         $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME));
-        $("[data-test-id=date] input").sendKeys(bookedDate);
+        $("[data-test-id=date] input").setValue(bookedDate);
         $("[data-test-id=name] input").setValue("Сидорова Анна-Мария");
         $("[data-test-id=phone] input").setValue("+71234567890");
         $("[data-test-id=agreement]").click();
         $("button.button").click();
-        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(exactText("Встреча успешно забронирована на " + bookedDate));
+        $(byText("Доставка в выбранный город недоступна")).shouldBe(visible);
     }
 
     @Test
-    public void shouldEntered() {
+    void shouldBeNotEmptyCityFields() {
         open("http://localhost:9999");
-        $("[data-test-id=city] input").setValue("Ка");
-        $$(".menu-item__control").findBy(text("Казань")).click();
-        String bookedDate = generateDate(7, "dd.MM.yyyy");
-        //$("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME));
-        $("[data-test-id=date] input").click();
-        $$(".calendar__day").findBy(text("26")).click();
+        $("[data-test-id=city] input").setValue("");
+        String bookedDate = generateDate(5, "dd.MM.yyyy");
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME));
+        $("[data-test-id=date] input").setValue(bookedDate);
         $("[data-test-id=name] input").setValue("Сидорова Анна-Мария");
         $("[data-test-id=phone] input").setValue("+71234567890");
         $("[data-test-id=agreement]").click();
         $("button.button").click();
-        $(".notification__content").shouldBe(visible, Duration.ofSeconds(15))
-                .shouldHave(exactText("Встреча успешно забронирована на " + bookedDate));
+        $(byText("Поле обязательно для заполнения")).shouldBe(visible);
+    }
+
+    @Test
+    void shouldBeNameFieldEnteredIncorrectly() {
+        open("http://localhost:9999");
+        $("[data-test-id=city] input").setValue("Казань");
+        String bookedDate = generateDate(5, "dd.MM.yyyy");
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME));
+        $("[data-test-id=date] input").setValue(bookedDate);
+        $("[data-test-id=name] input").setValue("Sidorova Anna-Mariya");
+        $("[data-test-id=phone] input").setValue("+71234567890");
+        $("[data-test-id=agreement]").click();
+        $("button.button").click();
+        $(byText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы")
+                .shouldBe(visible);
+    }
+
+    @Test
+    void shouldBeNameFieldEnteredIncorrectly() {
+        open("http://localhost:9999");
+        $("[data-test-id=city] input").setValue("Казань");
+        String bookedDate = generateDate(5, "dd.MM.yyyy");
+        $("[data-test-id=date] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME));
+        $("[data-test-id=date] input").setValue(bookedDate);
+        $("[data-test-id=name] input").setValue("Сидорова Анна-Мария");
+        $("[data-test-id=phone] input").setValue("8796");
+        $("[data-test-id=agreement]").click();
+        $("button.button").click();
+        $(byText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.")
+                .shouldBe(visible);
     }
 }
